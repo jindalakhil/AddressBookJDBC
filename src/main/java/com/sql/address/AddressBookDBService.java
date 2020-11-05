@@ -118,7 +118,7 @@ public class AddressBookDBService {
 	
 	public AddressBookData addContact(int id,String firstName, String lastName, String address, String city, String state, String zipcode, String phone, String email) {
 		AddressBookData addBookData = null;
-		String sql = String.format("INSERT INTO address_book(id,first_name, last_name, address, city, state, zip, phone_no, email) VALUES (%s,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", id,firstName, lastName, address, city, state, zipcode, phone, email);
+		String sql = String.format("INSERT INTO address_book(id,firstname, lastname, address, city, state, zip, phone_no, email) VALUES (%s,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", id,firstName, lastName, address, city, state, zipcode, phone, email);
 		try(Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
 			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
@@ -126,8 +126,8 @@ public class AddressBookDBService {
 				ResultSet result = statement.getGeneratedKeys();
 				if(result.next()) {
 					int id1 = result.getInt("id");
-					String fname = result.getString("first_name");
-					String lname = result.getString("last_name");
+					String fname = result.getString("firstname");
+					String lname = result.getString("lastname");
 					String address1 = result.getString("address");
 					String city1 = result.getString("city");
 					String state1 = result.getString("state");

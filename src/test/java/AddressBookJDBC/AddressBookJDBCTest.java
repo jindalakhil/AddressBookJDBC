@@ -15,7 +15,7 @@ public class AddressBookJDBCTest {
     public void givenEmpPayrollDataInDB_ShouldMatchEmpCount() {
     	AddressBookService service = new AddressBookService();
     	List<AddressBookData> addList = service.readAddressBookData(IOService.DB_IO);
-    	Assert.assertEquals(6, addList.size());
+    	Assert.assertEquals(9, addList.size());
     }
 	
 	@Test 
@@ -47,8 +47,8 @@ public class AddressBookJDBCTest {
 	public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
 		AddressBookService service = new AddressBookService();
 		service.readAddressBookData(IOService.DB_IO);
-		service.addContact(7, "def", "ghi", "12345678 street", "gurgaon", "Hr", "3719331", "8888888888", "def@gmail.com");
-		boolean result = service.checkAddressBookDataInSyncWithDB("def", "gurgaon");
+		service.addContact(20, "def", "ghi", "12345678 street", "gurgaon", "Hr", "3719331", "8888888888", "def@gmail.com");
+		boolean result = service.checkAddressBookDataInSyncWithDB("def", "ghi");
 		Assert.assertTrue(result);
 	}
 }
