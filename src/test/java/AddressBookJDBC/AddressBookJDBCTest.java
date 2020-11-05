@@ -42,4 +42,13 @@ public class AddressBookJDBCTest {
 		Map<String, Integer> countContactsByState = service.readCountContactsByState(IOService.DB_IO);
 		Assert.assertTrue(countContactsByState.get("pnb").equals(6));
 	}
+	
+	@Test
+	public void givenNewContact_WhenAdded_ShouldSyncWithDB() {
+		AddressBookService service = new AddressBookService();
+		service.readAddressBookData(IOService.DB_IO);
+		service.addContact(7, "def", "ghi", "12345678 street", "gurgaon", "Hr", "3719331", "8888888888", "def@gmail.com");
+		boolean result = service.checkAddressBookDataInSyncWithDB("def", "gurgaon");
+		Assert.assertTrue(result);
+	}
 }

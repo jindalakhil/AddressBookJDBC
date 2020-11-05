@@ -69,5 +69,10 @@ public class AddressBookService {
 		}
 		return null;
 	}
+	
+	public void addContact(int id,String first_name, String last_name, String  address, String city, String state, String zipcode, String phone_no, String email) {
+		addList.add(addressBookDBService.addContact(id,first_name, last_name, address, city, state, zipcode, phone_no, email));
+	}
+
 
 }

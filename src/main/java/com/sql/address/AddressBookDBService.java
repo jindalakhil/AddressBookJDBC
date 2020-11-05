@@ -115,4 +115,33 @@ public class AddressBookDBService {
 		}
 		return stateToContactsMap;
 	}
+	
+	public AddressBookData addContact(int id,String firstName, String lastName, String address, String city, String state, String zipcode, String phone, String email) {
+		AddressBookData addBookData = null;
+		String sql = String.format("INSERT INTO address_book(id,first_name, last_name, address, city, state, zip, phone_no, email) VALUES (%s,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", id,firstName, lastName, address, city, state, zipcode, phone, email);
+		try(Connection connection = this.getConnection()) {
+			Statement statement = connection.createStatement();
+			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
+			if(rowAffected == 1) {
+				ResultSet result = statement.getGeneratedKeys();
+				if(result.next()) {
+					int id1 = result.getInt("id");
+					String fname = result.getString("first_name");
+					String lname = result.getString("last_name");
+					String address1 = result.getString("address");
+					String city1 = result.getString("city");
+					String state1 = result.getString("state");
+					String zip = result.getString("zip");
+					String phone_no = result.getString("phone_no");
+					String email1 = result.getString("email");
+					addBookData = new AddressBookData(id1, fname, lname, address1, city1, state1, zip, phone_no, email1);
+				}
+			}
+
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return addBookData;
+	}
 }
