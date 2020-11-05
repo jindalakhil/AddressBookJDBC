@@ -1,6 +1,7 @@
 package com.sql.address;
 
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
 
@@ -54,6 +55,19 @@ public class AddressBookService {
 		}
 		return false;
 	}
+	
+	public Map<String, Integer> readCountContactsByCity(IOService ioService) {
+		if(ioService.equals(IOService.DB_IO)) {
+			return addressBookDBService.getCountByCity();
+		}
+		return null;
+	}
 
+	public Map<String, Integer> readCountContactsByState(IOService ioService) {
+		if(ioService.equals(IOService.DB_IO)) {
+			return addressBookDBService.getCountByState();
+		}
+		return null;
+	}
 
 }
