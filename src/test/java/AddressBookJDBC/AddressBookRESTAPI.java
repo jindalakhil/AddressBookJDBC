@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.google.gson.Gson;
 import com.sql.address.AddressBookData;
 import com.sql.address.AddressBookService;
+import com.sql.address.AddressBookService.IOService;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -95,5 +96,22 @@ public class AddressBookRESTAPI {
 		Response response = request.put("/persons/" + personData.id);
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(200, statusCode);
+	}
+	
+	@Test
+	public void givenEmployeeName_WhenDeleted_ShouldMatch200ResponseAndCount() {
+		AddressBookService service;
+		AddressBookData[] ArrayOfEmps = getAddressBookList();
+		service = new AddressBookService(Arrays.asList(ArrayOfEmps));
+		AddressBookData personData = service.getAddressBookData("jeff");
+		String personJson = new Gson().toJson(personData);
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/persons/" + personData.id);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+		service.deletePersonData(personData.first_name, IOService.REST_IO);
+		long entries = service.countEntries();
+		Assert.assertEquals(4, entries);
 	}
 }
