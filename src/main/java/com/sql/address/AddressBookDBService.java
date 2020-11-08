@@ -12,11 +12,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class AddressBookDBService {
 	private static AddressBookDBService abService;
+
 	public static AddressBookDBService getInstance() {
-		if(abService == null) {
+		if (abService == null) {
 			abService = new AddressBookDBService();
 		}
 		return abService;
@@ -57,7 +57,7 @@ public class AddressBookDBService {
 				String zip = result.getString("zip");
 				String phone_no = result.getString("phone_no");
 				String email = result.getString("email");
-				addressBookList.add(new AddressBookData(id, fname, lname, address, city, state, zip,phone_no,email));
+				addressBookList.add(new AddressBookData(id, fname, lname, address, city, state, zip, phone_no, email));
 			}
 			System.out.println(addressBookList);
 		} catch (SQLException e) {
@@ -65,11 +65,11 @@ public class AddressBookDBService {
 		}
 		return addressBookList;
 	}
-	
+
 	public int updateAddressBookData_Using_PreparedStatement(String fname, String city) {
 		return this.updateAddressBookDataUsingPreparedStatement(fname, city);
 	}
-	
+
 	private int updateAddressBookDataUsingPreparedStatement(String fname, String city) {
 		String sql = String.format("update address_book set city= '%s' where firstname = '%s';", city, fname);
 		try (Connection connection = this.getConnection()) {
@@ -80,20 +80,19 @@ public class AddressBookDBService {
 		}
 		return 0;
 	}
-	
+
 	public Map<String, Integer> getCountByCity() {
 		String sql = "SELECT city, COUNT(city) AS count_city FROM address_book GROUP BY city";
 		Map<String, Integer> cityToContactsMap = new HashMap<>();
-		try(Connection connection = this.getConnection()) {
+		try (Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
-			while(result.next()) {
+			while (result.next()) {
 				String city = result.getString("city");
 				int count = result.getInt("count_city");
 				cityToContactsMap.put(city, count);
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cityToContactsMap;
@@ -102,30 +101,32 @@ public class AddressBookDBService {
 	public Map<String, Integer> getCountByState() {
 		String sql = "SELECT state, COUNT(state) AS count_state FROM address_book GROUP BY state";
 		Map<String, Integer> stateToContactsMap = new HashMap<>();
-		try(Connection connection = this.getConnection()) {
+		try (Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet result = statement.executeQuery(sql);
-			while(result.next()) {
+			while (result.next()) {
 				String state = result.getString("state");
 				int count = result.getInt("count_state");
 				stateToContactsMap.put(state, count);
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return stateToContactsMap;
 	}
-	
-	public AddressBookData addContact(int id,String firstName, String lastName, String address, String city, String state, String zipcode, String phone, String email) {
+
+	public AddressBookData addContact(int id, String firstName, String lastName, String address, String city,
+			String state, String zipcode, String phone, String email) {
 		AddressBookData addBookData = null;
-		String sql = String.format("INSERT INTO address_book(id,firstname, lastname, address, city, state, zip, phone_no, email) VALUES (%s,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", id,firstName, lastName, address, city, state, zipcode, phone, email);
-		try(Connection connection = this.getConnection()) {
+		String sql = String.format(
+				"INSERT INTO address_book(id,firstname, lastname, address, city, state, zip, phone_no, email) VALUES (%s,'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+				id, firstName, lastName, address, city, state, zipcode, phone, email);
+		try (Connection connection = this.getConnection()) {
 			Statement statement = connection.createStatement();
 			int rowAffected = statement.executeUpdate(sql, statement.RETURN_GENERATED_KEYS);
-			if(rowAffected == 1) {
+			if (rowAffected == 1) {
 				ResultSet result = statement.getGeneratedKeys();
-				if(result.next()) {
+				if (result.next()) {
 					int id1 = result.getInt("id");
 					String fname = result.getString("firstname");
 					String lname = result.getString("lastname");
@@ -135,16 +136,15 @@ public class AddressBookDBService {
 					String zip = result.getString("zip");
 					String phone_no = result.getString("phone_no");
 					String email1 = result.getString("email");
-					addBookData = new AddressBookData(id1, fname, lname, address1, city1, state1, zip, phone_no, email1);
+					addBookData = new AddressBookData(id1, fname, lname, address1, city1, state1, zip, phone_no,
+							email1);
 				}
 			}
 
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return addBookData;
 	}
-	
-	
+
 }

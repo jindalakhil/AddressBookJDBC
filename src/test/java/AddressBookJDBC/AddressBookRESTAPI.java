@@ -41,7 +41,8 @@ public class AddressBookRESTAPI {
 		AddressBookService service;
 		AddressBookData[] ArrayOfEmps = getAddressBookList();
 		service = new AddressBookService(Arrays.asList(ArrayOfEmps));
-		AddressBookData personData = new AddressBookData(3, "mno", "pqr", "12 Street", "city3", "state3", "1313121","9999999997","mno@gmail.com");
+		AddressBookData personData = new AddressBookData(3, "mno", "pqr", "12 Street", "city3", "state3", "1313121",
+				"9999999997", "mno@gmail.com");
 		Response response = addPersonToJsonServer(personData);
 		int statusCode = response.getStatusCode();
 		Assert.assertEquals(201, statusCode);
@@ -64,14 +65,17 @@ public class AddressBookRESTAPI {
 		AddressBookService service;
 		AddressBookData[] ArrayOfEmps = getAddressBookList();
 		service = new AddressBookService(Arrays.asList(ArrayOfEmps));
-		AddressBookData[] arrayPersonData = { new AddressBookData(4, "stu", "vwx", "125 Street", "city4", "state4", "19013121","9999999996","stu@gmail.com"),
-				new AddressBookData(5, "yzq", "abc", "123 Street", "city5", "state5", "1310021","9999999994","yzq@gmail.com")};
+		AddressBookData[] arrayPersonData = {
+				new AddressBookData(4, "stu", "vwx", "125 Street", "city4", "state4", "19013121", "9999999996",
+						"stu@gmail.com"),
+				new AddressBookData(5, "yzq", "abc", "123 Street", "city5", "state5", "1310021", "9999999994",
+						"yzq@gmail.com") };
 		for (AddressBookData personData : Arrays.asList(arrayPersonData)) {
-		Response response = addPersonToJsonServer(personData);
-		int statusCode = response.getStatusCode();
-		Assert.assertEquals(201, statusCode);
-		personData = new Gson().fromJson(response.asString(), AddressBookData.class);
-		service.addPerson(personData, com.sql.address.AddressBookService.IOService.REST_IO);
+			Response response = addPersonToJsonServer(personData);
+			int statusCode = response.getStatusCode();
+			Assert.assertEquals(201, statusCode);
+			personData = new Gson().fromJson(response.asString(), AddressBookData.class);
+			service.addPerson(personData, com.sql.address.AddressBookService.IOService.REST_IO);
 		}
 		long entries = service.countEntries();
 		Assert.assertEquals(5, entries);
