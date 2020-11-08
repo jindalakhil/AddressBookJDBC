@@ -1,5 +1,6 @@
 package com.sql.address;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,8 @@ public class AddressBookService {
 		addressBookDBService = AddressBookDBService.getInstance();
 	}
 
-	public AddressBookService(List<AddressBookData> empList) {
-		this.addList = addList;
+	public AddressBookService(List<AddressBookData> addList) {
+		this.addList = new ArrayList<>(addList);
 	}
 
 	public List<AddressBookData> readAddressBookData(IOService dbIo) {
@@ -27,8 +28,8 @@ public class AddressBookService {
 		}
 		return this.addList;
 	}
-	
-	private AddressBookData getAddressBookData(String name) {
+
+	public AddressBookData getAddressBookData(String name) {
 		for (AddressBookData data : addList) {
 			if (data.first_name.equals(name)) {
 				return data;
@@ -56,25 +57,27 @@ public class AddressBookService {
 		}
 		return false;
 	}
-	
+
 	public Map<String, Integer> readCountContactsByCity(IOService ioService) {
-		if(ioService.equals(IOService.DB_IO)) {
+		if (ioService.equals(IOService.DB_IO)) {
 			return addressBookDBService.getCountByCity();
 		}
 		return null;
 	}
 
 	public Map<String, Integer> readCountContactsByState(IOService ioService) {
-		if(ioService.equals(IOService.DB_IO)) {
+		if (ioService.equals(IOService.DB_IO)) {
 			return addressBookDBService.getCountByState();
 		}
 		return null;
 	}
-	
-	public void addContact(int id,String first_name, String last_name, String  address, String city, String state, String zipcode, String phone_no, String email) {
-		addList.add(addressBookDBService.addContact(id,first_name, last_name, address, city, state, zipcode, phone_no, email));
+
+	public void addContact(int id, String first_name, String last_name, String address, String city, String state,
+			String zipcode, String phone_no, String email) {
+		addList.add(addressBookDBService.addContact(id, first_name, last_name, address, city, state, zipcode, phone_no,
+				email));
 	}
-	
+
 	public void addContactsWithThreads(List<AddressBookData> addBookList) {
 		Map<Integer, Boolean> contactAdditionStatus = new HashMap<Integer, Boolean>();
 		addBookList.forEach(ad -> {
@@ -97,5 +100,22 @@ public class AddressBookService {
 		}
 	}
 
+	// REST API
+	public static long countEntries() {
+
+		return addList.size();
+
+	}
+
+	public void addPerson(AddressBookData personData, IOService ioService) {
+
+		addList.add(personData);
+	}
+
+	public void updatePersonCity(String name, String city, IOService ioService) {
+		AddressBookData personData = this.getAddressBookData(name);
+		if (personData != null)
+			personData.city = city;
+	}
 
 }

@@ -23,7 +23,7 @@ public class AddressBookDBService {
 	}
 
 	private Connection getConnection() throws SQLException {
-		String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service?useSSL=false";
+		String jdbcURL = "jdbc:mysql://localhost:3306/address_book_service?allowPublicKeyRetrieval=true&useSSL=false";
 		String userName = "ajindal";
 		String password = "Akhil@17";
 		Connection connection;
