@@ -11,8 +11,9 @@ public class AddressBookData {
 	public String phone_no;
 	public String email;
 
-	public AddressBookData(int id,String first_name, String last_name, String address, String city, String state, String zip, String phone, String email) {
-		this.id=id;
+	public AddressBookData(int id, String first_name, String last_name, String address, String city, String state,
+			String zip, String phone, String email) {
+		this.id = id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.address = address;
@@ -25,8 +26,7 @@ public class AddressBookData {
 
 	@Override
 	public String toString() {
-		return "id=" + id + ", name=" + first_name+" "+last_name+" ";
+		return "id=" + id + ", name=" + first_name + " " + last_name + " ";
 	}
-
 
 }
